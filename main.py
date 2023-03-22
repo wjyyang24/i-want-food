@@ -1,9 +1,9 @@
-# This is a sample Python script.
+import json
+import requests
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# google maps api key
+API_KEY = "AIzaSyDIHufVfGpX3VtO5m4mvuZkDeU87zmhVU8"
 
-#Format for Restauraunt is Description, Budget, DayOpen, DayClose, EndOpen, EndClose, Lat, Long
 McDonalds = ["McDonalds", "Fast Food", 5, 6, 23, 6, 23, 38.0424713, -84.50286613]
 RaisingCanes = ["Raising Canes", "Fast Food", 10, 10, 23, 10, 24, 38.0429525, -84.50421929]
 WasabiBarandGrill = ["Wasabi Bar and Grill", "Sushi", 15, 11, 21, 11, 22, 38.04358123, -84.50133363]
@@ -19,8 +19,21 @@ WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
 
+# use the google maps api nearby search to find 20 results
+# returns json string
+# radius in meters
+def nearbySearch(latitude, longtitude, radius, type = "restaurant", key = API_KEY):
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longtitude}&radius={radius}&type={type}&key={API_KEY}"
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    results = json.loads(response.text)
+
+    print(results)
+    return results
+
 def checkbudget(initialList, maxBudget):
-    validPlaces = []
     for place in initialList:
         if place[2] <= maxBudget:
             validPlaces.append(place)
@@ -59,6 +72,9 @@ def checkDistance(initialList, maxDistance, index):
 #if __name__ == '__main__':
 print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
+# nearbySearch(38.03285, -84.50189, 8000)
+
+""" 
 while True:
     try:
         num = float(input("First, what is your budget today? "))
@@ -97,6 +113,7 @@ while flag:
     else:
         print("Sorry, that didn't work. Can you please try again? ")
 #print("The Weekend flag is:", WeekendOrNot)
+"""
 
 flag = True
 while flag:
@@ -106,7 +123,8 @@ while flag:
     else:
         print("Sorry, that didn't work. Can you please try again? ")
 AnchorIndex = int(input_value)
-#print("The Anchor Index is:", AnchorIndex)
+currLocation = Anchors[AnchorIndex]
+currLat, currLong = currLocation[0], currLocation[1]
 
 while True:
     try:
@@ -119,18 +137,24 @@ while True:
     else:
         print("The distance can't be negative!")
 Miles = num
-#print("The Distance is:", Miles)
+km = Miles * 1.609344
+meters = km * 1000
 
-valid = checkbudget(Restaurants, Budget)
+print(f"{currLat}, {currLong}, {km}")
+
+results = nearbySearch(currLat, currLong, meters)
+
+""" valid = checkbudget(Restaurants, Budget)
 valid2 = checkHours(valid, Time, WeekendOrNot)
 valid3 = checkDistance(valid2, Miles, AnchorIndex)
+"""
 print("The Valid Restaurants are: ")
-placeIndex = 0
-for place in valid3:
-    print("Location ", placeIndex, ": ", place[0])
+placeIndex = 1
+for i in results["results"]:
+    print("Location ", placeIndex, ": ", i["name"])
     placeIndex += 1
 
-Flag2 = True
+""" Flag2 = True
 while Flag2:
     try:
         input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its index for more info, or '-1' to quit. "))
@@ -142,5 +166,5 @@ while Flag2:
     elif input_value == -1:
         Flag2 = False
     else:
-        print("Invalid Index!")
+        print("Invalid Index!") """
 print("Thank you for using I Want Food! v0.1.2")
