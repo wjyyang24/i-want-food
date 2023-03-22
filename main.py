@@ -2,7 +2,7 @@ import json
 import requests
 
 # google maps api key
-API_KEY = "AIzaSyDIHufVfGpX3VtO5m4mvuZkDeU87zmhVU8"
+API_KEY = ""
 
 McDonalds = ["McDonalds", "Fast Food", 5, 6, 23, 6, 23, 38.0424713, -84.50286613]
 RaisingCanes = ["Raising Canes", "Fast Food", 10, 10, 23, 10, 24, 38.0429525, -84.50421929]
