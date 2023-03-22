@@ -70,7 +70,7 @@ while True:
     else:
         print("The budget can't be negative!")
 Budget = num
-print("The Budget is:", Budget)
+#print("The Budget is:", Budget)
 
 while True:
     try:
@@ -83,7 +83,7 @@ while True:
     else:
         print("Invalid time!")
 Time = num
-print("The Time is:", Time)
+#print("The Time is:", Time)
 
 flag = True
 while flag:
@@ -96,7 +96,7 @@ while flag:
         flag = False
     else:
         print("Sorry, that didn't work. Can you please try again? ")
-print("The Weekend flag is:", WeekendOrNot)
+#print("The Weekend flag is:", WeekendOrNot)
 
 flag = True
 while flag:
@@ -106,7 +106,7 @@ while flag:
     else:
         print("Sorry, that didn't work. Can you please try again? ")
 AnchorIndex = int(input_value)
-print("The Anchor Index is:", AnchorIndex)
+#print("The Anchor Index is:", AnchorIndex)
 
 while True:
     try:
@@ -119,11 +119,28 @@ while True:
     else:
         print("The distance can't be negative!")
 Miles = num
-print("The Distance is:", Miles)
+#print("The Distance is:", Miles)
 
 valid = checkbudget(Restaurants, Budget)
 valid2 = checkHours(valid, Time, WeekendOrNot)
 valid3 = checkDistance(valid2, Miles, AnchorIndex)
 print("The Valid Restaurants are: ")
+placeIndex = 0
 for place in valid3:
-    print(place[0])
+    print("Location ", placeIndex, ": ", place[0])
+    placeIndex += 1
+
+Flag2 = True
+while Flag2:
+    try:
+        input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its index for more info, or '-1' to quit. "))
+    except ValueError:
+        print("You didn't enter an integer!")
+        continue
+    if input_value < len(valid3) and input_value >= 0:
+        print(valid3[input_value][1])
+    elif input_value == -1:
+        Flag2 = False
+    else:
+        print("Invalid Index!")
+print("Thank you for using I Want Food! v0.1.2")
