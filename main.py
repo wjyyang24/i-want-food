@@ -39,7 +39,7 @@ def checkBudget(initialList, maxBudget):
             validPlaces.append(place["name"])
     return validPlaces
 
-
+"""
 def checkHours(initialList, time, endFlag):
     validPlaces = []
     for place in initialList:
@@ -58,6 +58,7 @@ def checkHours(initialList, time, endFlag):
                 if time > place[3] or time < place[4]:
                     validPlaces.append(place)
     return validPlaces
+ """
 
 
 def checkDistance(initialList, maxDistance, index):
@@ -159,7 +160,7 @@ if __name__ == '__main__':
     meters = km * 1000
 
     print(f"{currLat}, {currLong}, {km}")
-
+    
     results = nearbySearch(currLat, currLong, meters, API_KEY)
     locations = results["results"]
 
@@ -167,15 +168,16 @@ if __name__ == '__main__':
     valid2 = checkHours(valid, Time, WeekendOrNot)
     valid3 = checkDistance(valid2, Miles, AnchorIndex)
     """
+
+    # List the names of the locations returned by nearby search and if they are open
     print("The Valid Restaurants are: ")
     placeIndex = 1
     for i in locations:
-        print("Location ", placeIndex, ": ", i.get("name"))
+        print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
         placeIndex += 1
-    print('')
 
     valid = checkBudget(results, budget)
-    print(f"There are {len(valid)} restaurants within your budget")
+    print(f"\nThere are {len(valid)} open restaurants within your budget")
     for restaurant in valid:
         print(restaurant)
 
@@ -191,5 +193,7 @@ if __name__ == '__main__':
         elif input_value == -1:
             Flag2 = False
         else:
-            print("Invalid Index!") """
+            print("Invalid Index!")
+    """
+
     print("Thank you for using I Want Food! v0.2.0")
