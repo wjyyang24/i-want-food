@@ -72,6 +72,30 @@ def checkDistance(initialList, maxDistance, index):
     return validPlaces
 
 
+def getPriceInDollarSigns(priceLevel):
+    if priceLevel == 1:
+        return "$"
+    elif priceLevel == 2:
+        return "$$"
+    elif priceLevel == 3:
+        return "$$$"
+    elif priceLevel == 4:
+        return "$$$$"
+    else:
+        return "No info"
+
+
+def printInfo(locations, index):
+    location = locations[index]
+    print(f"""
+========== {location.get("name")} ==========
+{"Open Now" if location.get("opening_hours").get("open_now") == True else "CLOSED"}
+Address: {location.get("vicinity")}
+Rating: {location.get("rating")} Stars
+Price Level: {getPriceInDollarSigns(location.get("price_level"))}
+    """)
+
+
 def checkAPIKEY(API_KEY):
     results = nearbySearch(0, 0, 1, API_KEY)
     if results["status"] == "OK" or results["status"] == "ZERO_RESULTS":
@@ -105,34 +129,6 @@ if __name__ == '__main__':
     budget = num
     print("The Budget is:", budget)
 
-    """
-    while True:
-        try:
-            num = float(input("Next, what time do you plan on arriving? Please use military + decimal time! EX) 10:30 pm would be 22.5 "))
-        except ValueError:
-            print("You didn't enter a number!")
-            continue
-        if (num >= 0 and num <= 24):
-            break
-        else:
-            print("Invalid time!")
-    Time = num
-    #print("The Time is:", Time)
-
-    flag = True
-    while flag:
-        input_value = input("Do you plan on going on a weekend? Please type 'Y' or 'N'! ")
-        if (input_value == "Y" or input_value == "N"):
-            if (input_value == "Y"):
-                WeekendOrNot = True
-            else:
-                WeekendOrNot = False
-            flag = False
-        else:
-            print("Sorry, that didn't work. Can you please try again? ")
-    #print("The Weekend flag is:", WeekendOrNot)
-    """
-
     flag = True
     while flag:
         input_value = input("Do you plan on traveling from the Willy T '0' or the Student Center '1' ")
@@ -163,37 +159,31 @@ if __name__ == '__main__':
     results = nearbySearch(currLat, currLong, meters, API_KEY)
     locations = results["results"]
 
-    """ valid = checkbudget(Restaurants, Budget)
-    valid2 = checkHours(valid, Time, WeekendOrNot)
-    valid3 = checkDistance(valid2, Miles, AnchorIndex)
-    """
-
     # List the names of the locations returned by nearby search and if they are open
     print("The Valid Restaurants are: ")
-    placeIndex = 1
+    placeIndex = 0
     for i in locations:
         print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
         placeIndex += 1
 
-    # Print restaurant names that are within the inputted budget
+    """ # Print restaurant names that are within the inputted budget
     valid = checkBudget(results, budget)
     print(f"\nThere are {len(valid)} open restaurants within your budget")
     for restaurant in valid:
-        print(restaurant)
+        print(restaurant) """
 
-    """ Flag2 = True
+    Flag2 = True
     while Flag2:
         try:
             input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its index for more info, or '-1' to quit. "))
         except ValueError:
             print("You didn't enter an integer!")
             continue
-        if input_value <= placeIndex and input_value >= 1:
-            # print(valid3[input_value][1])
+        if input_value <= placeIndex and input_value >= 0:
+            printInfo(locations, input_value)
         elif input_value == -1:
             Flag2 = False
         else:
             print("Invalid Index!")
-    """
 
     print("Thank you for using I Want Food! v0.2.0")
