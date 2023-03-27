@@ -81,7 +81,6 @@ def checkAPIKEY(API_KEY):
         return False
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
@@ -176,6 +175,7 @@ if __name__ == '__main__':
         print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
         placeIndex += 1
 
+    # Print restaurant names that are within the inputted budget
     valid = checkBudget(results, budget)
     print(f"\nThere are {len(valid)} open restaurants within your budget")
     for restaurant in valid:
