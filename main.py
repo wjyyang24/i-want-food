@@ -83,7 +83,6 @@ def printInfo(locations, index):
         pass
 
 if __name__ == '__main__':
-
     currLocation = Anchors[AnchorIndex]
     currLat, currLong = currLocation[0], currLocation[1]
 
