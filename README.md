@@ -1,2 +1,2 @@
 # i-want-food
-google maps for **hungry people**
+To use this project, check out our website link: https://iwantfood.helioho.st
