@@ -12,9 +12,9 @@ SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
 
 args=cgi.parse()
-budget = int(args["budget"])
-AnchorIndex = int(args["anchor"])
-Miles = float(args["miles"])
+budget = 0#int(args["budget"])
+AnchorIndex = 1#int(args["anchor"])
+Miles = 2#float(args["miles"])
 
 # use the google maps api nearby search to find 20 results
 # returns json string
@@ -88,11 +88,6 @@ if __name__ == '__main__':
 
 
     #print(API_KEY)
-    while True:
-        if checkAPIKEY(API_KEY):
-            break
-        else:
-            pass
 
     #print("The Budget is:", budget)
 
