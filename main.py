@@ -1,8 +1,12 @@
+#!/usr/bin/python3.10
 #python script for heliohost
 #all material that is printed is returned, so print statements are commented out
 import json
 import requests
 import cgi
+import cgitb
+cgitb.enable()
+API_KEY = ""
 WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
@@ -82,7 +86,7 @@ def checkAPIKEY(API_KEY):
 if __name__ == '__main__':
     #print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
-    API_KEY = "AIzaSyAZCI5CESGptwRNxXKBjMSCmTKfr-pAgic"
+
     #print(API_KEY)
     while True:
         if checkAPIKEY(API_KEY):
