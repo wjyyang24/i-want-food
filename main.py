@@ -79,7 +79,7 @@ def checkAPIKEY(API_KEY):
 if __name__ == '__main__':
     print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
-    API_KEY = "AIzaSyAZCI5CESGptwRNxXKBjMSCmTKfr-pAgic"
+    API_KEY = ""
     print(API_KEY)
     while True:
         if checkAPIKEY(API_KEY):
