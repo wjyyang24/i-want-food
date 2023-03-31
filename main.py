@@ -1,13 +1,16 @@
+#python script for heliohost
+#all material that is printed is returned, so print statements are commented out
 import json
 import requests
-import sys
+import cgi
 WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
 
-budget = int(sys.argv[1])
-AnchorIndex = int(sys.argv[2])
-Miles = float(sys.argv[3])
+args=cgi.parse()
+budget = int(args["budget"])
+AnchorIndex = int(args["anchor"])
+Miles = float(args["miles"])
 
 # use the google maps api nearby search to find 20 results
 # returns json string
@@ -72,22 +75,22 @@ def checkAPIKEY(API_KEY):
     if results["status"] == "OK" or results["status"] == "ZERO_RESULTS":
         return True
     else:
-        print(f"STATUS: {results['status']}")
+        #print(f"STATUS: {results['status']}")
         return False
 
 
 if __name__ == '__main__':
-    print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
+    #print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
     API_KEY = "AIzaSyAZCI5CESGptwRNxXKBjMSCmTKfr-pAgic"
-    print(API_KEY)
+    #print(API_KEY)
     while True:
         if checkAPIKEY(API_KEY):
             break
         else:
             pass
 
-    print("The Budget is:", budget)
+    #print("The Budget is:", budget)
 
 
     currLocation = Anchors[AnchorIndex]
@@ -96,17 +99,19 @@ if __name__ == '__main__':
     km = Miles * 1.609344
     meters = km * 1000
 
-    print(f"{currLat}, {currLong}, {km}")
+    #print(f"{currLat}, {currLong}, {km}")
     
     results = nearbySearch(currLat, currLong, meters, API_KEY)
     locations = results["results"]
 
     # List the names of the locations returned by nearby search and if they are open
-    print("The Valid Restaurants are: ")
+    #print("The Valid Restaurants are: ")
+    print("Content-Type: text/html\n\n")
     placeIndex = 0
     for i in locations:
         try:
-            print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
+            #print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
+            printInfo(locations,i)
         except:
             pass
         placeIndex += 1

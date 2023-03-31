@@ -26,14 +26,14 @@
     </div>
     <div><h2>Starting Location</h2></div>
     <div class="anchorButtons">
-      <button type="button" id="btn0" class="btn btn-secondary btn-lg" aria-pressed="false" onclick="btnUpdate(0)">William T. Young Library</button>&nbsp;
+      <button type="button" id="btn0" class="btn btn-primary btn-lg" aria-pressed="false" onclick="btnUpdate(0)">William T. Young Library</button>&nbsp;
       <button type="button" id="btn1" class="btn btn-secondary btn-lg" aria-pressed="false" onclick="btnUpdate(1)">Student Center</button>
     </div>
     <div><h2>Max. Distance (miles)</h2></div>
     <div class="distanceInput">
       <input type="number" name="distanceBox" min="0" max="100" value="0" id="distanceBox"/></div>
     </div>
-    <div><button type="button" class="btn btn-primary btn-lg" id="submit" onclick="request()">Go</button></div>
+    <div><button type="button" class="btn btn-secondary btn-lg" id="submit" onclick="request()">Go</button></div>
 
 
     <script>
@@ -59,7 +59,7 @@
       }
 
       var budgetRange = document.getElementById("budgetRange");
-      var anchor = -1;
+      var anchor = 0;
       var distanceBox = document.getElementById("distanceBox");
     </script>
 
