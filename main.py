@@ -23,8 +23,8 @@ Miles = float(args["miles"][0])
 # use the google maps api nearby search to find 20 results
 # returns json string
 # radius in meters
-def nearbySearch(latitude, longtitude, radius, key, type = "restaurant"):
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longtitude}&radius={radius}&type={type}&key={key}"
+def nearbySearch(latitude, longtitude, radius, maxprice, key, type = "restaurant"):
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longtitude}&radius={radius}&type={type}&key={key}&maxprice={maxprice}"
     payload = {}
     headers = {}
 
@@ -80,19 +80,7 @@ def printInfo(locations, index):
     except:
         pass
 
-
-def checkAPIKEY(API_KEY):
-    results = nearbySearch(0, 0, 1, API_KEY)
-    if results["status"] == "OK" or results["status"] == "ZERO_RESULTS":
-        return True
-    else:
-        #print(f"STATUS: {results['status']}")
-        return False
-
-
 if __name__ == '__main__':
-    print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
-
 
     currLocation = Anchors[AnchorIndex]
     currLat, currLong = currLocation[0], currLocation[1]
@@ -102,7 +90,7 @@ if __name__ == '__main__':
 
     #print(f"{currLat}, {currLong}, {km}")
     
-    results = nearbySearch(currLat, currLong, meters, API_KEY)
+    results = nearbySearch(currLat, currLong, meters, budget API_KEY)
     locations = results["results"]
 
     # List the names of the locations returned by nearby search and if they are open
