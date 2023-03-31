@@ -91,16 +91,11 @@ def checkAPIKEY(API_KEY):
 
 
 if __name__ == '__main__':
-    print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
-
-
     currLocation = Anchors[AnchorIndex]
     currLat, currLong = currLocation[0], currLocation[1]
 
     km = Miles * 1.609344
     meters = km * 1000
-
-    #print(f"{currLat}, {currLong}, {km}")
     
     results = nearbySearch(currLat, currLong, meters, API_KEY)
     locations = results["results"]
