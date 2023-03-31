@@ -38,6 +38,7 @@
 
     <script>
       const numButtons = 2
+      const restaurantList = document.getElementById("restaurantList")
       function btnUpdate(idx) {
         for (let i = 0; i < numButtons; i++) {
           if (i==idx) {
@@ -55,7 +56,8 @@
       }
 
       async function requestPlaces() {
-        const post = await fetch("")
+        const post = await fetch("https://iwantfood.helioho.st/cgi-bin/main.py?budget=" + budgetRange.value + "&anchor=" + anchor + "&miles=" + distanceBox.value).then((res) => res.json());
+        restaurantList.innerHTML = post.title
       }
 
       var budgetRange = document.getElementById("budgetRange");
