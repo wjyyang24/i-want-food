@@ -1,13 +1,13 @@
 import json
 import requests
-from sys import argv
+import sys
 WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
 
-budget = argv[1]
-AnchorIndex = argv[2]
-Miles = argv[3]
+budget = int(sys.argv[1])
+AnchorIndex = int(sys.argv[2])
+Miles = float(sys.argv[3])
 
 # use the google maps api nearby search to find 20 results
 # returns json string
@@ -110,25 +110,3 @@ if __name__ == '__main__':
         except:
             pass
         placeIndex += 1
-
-    """ # Print restaurant names that are within the inputted budget
-    valid = checkBudget(results, budget)
-    print(f"\nThere are {len(valid)} open restaurants within your budget")
-    for restaurant in valid:
-        print(restaurant) """
-
-    Flag2 = True
-    while Flag2:
-        try:
-            input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its index for more info, or '-1' to quit. "))
-        except ValueError:
-            print("You didn't enter an integer!")
-            continue
-        if input_value <= placeIndex and input_value >= 0:
-            printInfo(locations, input_value)
-        elif input_value == -1:
-            Flag2 = False
-        else:
-            print("Invalid Index!")
-
-    print("Thank you for using I Want Food! v0.2.0")
