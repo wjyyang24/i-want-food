@@ -36,12 +36,15 @@ def nearbySearch(latitude, longtitude, radius, maxprice, key, type = "restaurant
 
 
 def checkBudget(initialList, maxBudget):
+
     validPlaces = []
     for place in initialList["results"]:
         # print(place)
         if place.get('price_level') is not None and place.get('price_level') <= maxBudget:
             validPlaces.append(place["name"])
     return validPlaces
+ """
+
 
 def checkDistance(initialList, maxDistance, index):
     validPlaces = []
@@ -58,6 +61,7 @@ def getPriceInDollarSigns(priceLevel):
     if priceLevel == 0:
         return "Free!(?)"
     elif priceLevel == 1:
+
         return "$"
     elif priceLevel == 2:
         return "$$"
