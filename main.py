@@ -55,7 +55,9 @@ def checkDistance(initialList, maxDistance, index):
 
 
 def getPriceInDollarSigns(priceLevel):
-    if priceLevel == 1:
+    if priceLevel == 0:
+        return "Free!(?)"
+    elif priceLevel == 1:
         return "$"
     elif priceLevel == 2:
         return "$$"
@@ -90,7 +92,7 @@ if __name__ == '__main__':
 
     #print(f"{currLat}, {currLong}, {km}")
     
-    results = nearbySearch(currLat, currLong, meters, budget API_KEY)
+    results = nearbySearch(currLat, currLong, meters, budget, API_KEY)
     locations = results["results"]
 
     # List the names of the locations returned by nearby search and if they are open
