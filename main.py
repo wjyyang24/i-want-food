@@ -91,12 +91,7 @@ def checkAPIKEY(API_KEY):
 
 
 if __name__ == '__main__':
-    #print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
-
-
-    #print(API_KEY)
-
-    #print("The Budget is:", budget)
+    print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
 
 
     currLocation = Anchors[AnchorIndex]
