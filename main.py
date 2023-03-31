@@ -163,7 +163,10 @@ if __name__ == '__main__':
     print("The Valid Restaurants are: ")
     placeIndex = 0
     for i in locations:
-        print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
+        try:
+            print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
+        except:
+            pass
         placeIndex += 1
 
     """ # Print restaurant names that are within the inputted budget
