@@ -6,15 +6,19 @@ import requests
 import cgi
 import cgitb
 cgitb.enable()
-API_KEY = ""
+print("Content-Type: text/html\n\n") #header for browser reading data
+apiFile = open("apiKey.txt","r")
+API_KEY = apiFile.readlines()[0]
+apiFile.close()
 WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
 Anchors = [WillyT, SC]
 
 args=cgi.parse()
-budget = 0#int(args["budget"])
-AnchorIndex = 1#int(args["anchor"])
-Miles = 2#float(args["miles"])
+budget = int(args["budget"][0])
+AnchorIndex = int(args["anchor"][0])
+Miles = float(args["miles"][0])
+
 
 # use the google maps api nearby search to find 20 results
 # returns json string
@@ -65,13 +69,16 @@ def getPriceInDollarSigns(priceLevel):
 
 def printInfo(locations, index):
     location = locations[index]
-    print(f"""
-========== {location.get("name")} ==========
-{"Open Now" if location.get("opening_hours").get("open_now") == True else "CLOSED"}
-Address: {location.get("vicinity")}
-Rating: {location.get("rating")} Stars
-Price Level: {getPriceInDollarSigns(location.get("price_level"))}
-    """)
+    try:
+        print(f"""
+        ========== {location.get("name")} ==========<br>
+        {"Open Now" if location.get("opening_hours").get("open_now") == True else "CLOSED"}<br>
+        Address: {location.get("vicinity")}<br>
+        Rating: {location.get("rating")} Stars<br>
+        Price Level: {getPriceInDollarSigns(location.get("price_level"))}<br>
+            """)
+    except:
+        pass
 
 
 def checkAPIKEY(API_KEY):
@@ -105,12 +112,8 @@ if __name__ == '__main__':
 
     # List the names of the locations returned by nearby search and if they are open
     #print("The Valid Restaurants are: ")
-    print("Content-Type: text/html\n\n")
+
     placeIndex = 0
-    for i in locations:
-        try:
-            #print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
-            printInfo(locations,i)
-        except:
-            pass
+    for i in range(len(locations)):
+        printInfo(locations,i)
         placeIndex += 1
