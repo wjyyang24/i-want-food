@@ -56,8 +56,10 @@
       }
 
       async function requestPlaces() {
-        const post = await fetch("https://iwantfood.helioho.st/cgi-bin/main.py?budget=" + budgetRange.value + "&anchor=" + anchor + "&miles=" + distanceBox.value).then((res) => res.text());
-        restaurantList.innerHTML = post.title
+        restaurantList.innerHTML="Loading..."
+        var url = "https://iwantfood.helioho.st/cgi-bin/main.py?budget=" + budgetRange.value + "&anchor=" + anchor + "&miles=" + distanceBox.value;
+        console.log(url)
+        var post = await fetch(url).then(response =>response.text()).then(res2 => {restaurantList.innerHTML=res2});
       }
 
       var budgetRange = document.getElementById("budgetRange");
