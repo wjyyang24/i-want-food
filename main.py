@@ -43,7 +43,6 @@ def checkBudget(initialList, maxBudget):
         if place.get('price_level') is not None and place.get('price_level') <= maxBudget:
             validPlaces.append(place["name"])
     return validPlaces
- """
 
 
 def checkDistance(initialList, maxDistance, index):
