@@ -20,10 +20,20 @@
     </div>
 
     <script>
+      async function getDetails(placeID) {
+        var url = "https://iwantfood.helioho.st/cgi-bin/details.py?placeid=" + placeID
+        console.log(url)
+        var returnVal
+        var post = await fetch(url).then(response =>response.text())
+        return post
+      }
         const pageURL = new URL(window.location.toLocaleString());
         console.log(pageURL)
         placeID = pageURL.searchParams.get("placeid")
         console.log(placeID)
+        details = getDetails(placeID)
+        console.log(details)
+
     </script>
   </body>
 </html>
