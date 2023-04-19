@@ -76,7 +76,7 @@ def printInfo(locations, index):
     location = locations[index]
     try:
         print(f"""
-        <a href="/cgi-bin/details.py?placeID={location.get("place_id")}">========== {location.get("name")} ==========</a><br>
+        <a href="/cgi-bin/details.py?placeid={location.get("place_id")}">========== {location.get("name")} ==========</a><br>
         {"Open Now" if location.get("opening_hours").get("open_now") == True else "CLOSED"}<br>
         Address: {location.get("vicinity")}<br>
         Rating: {location.get("rating")} Stars<br>
