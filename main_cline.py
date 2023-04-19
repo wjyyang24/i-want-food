@@ -39,27 +39,6 @@ def checkBudget(initialList, maxBudget):
             validPlaces.append(place["name"])
     return validPlaces
 
-"""
-def checkHours(initialList, time, endFlag):
-    validPlaces = []
-    for place in initialList:
-        if endFlag == True:
-            if place[6] > place[5]: #if closes at pm
-                if time > place[5] and time < place[6]:
-                    validPlaces.append(place)
-            else:
-                if time > place[5] or time < place[6]:
-                    validPlaces.append(place)
-        else:
-            if place[4] > place[3]: #if closes at pm
-                if time > place[3] and time < place[4]:
-                    validPlaces.append(place)
-            else:
-                if time > place[3] or time < place[4]:
-                    validPlaces.append(place)
-    return validPlaces
- """
-
 
 def checkDistance(initialList, maxDistance, index):
     validPlaces = []
