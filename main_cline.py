@@ -1,16 +1,6 @@
 import json
+import time
 import requests
-
-McDonalds = ["McDonalds", "Fast Food", 5, 6, 23, 6, 23, 38.0424713, -84.50286613]
-RaisingCanes = ["Raising Canes", "Fast Food", 10, 10, 23, 10, 24, 38.0429525, -84.50421929]
-WasabiBarandGrill = ["Wasabi Bar and Grill", "Sushi", 15, 11, 21, 11, 22, 38.04358123, -84.50133363]
-CookOut = ["Cook-Out","Fast Food", 8, 11.5, 3, 11.5, 4, 38.04054075, -84.51358787]
-BourbonNToulouse = ["Bourbon 'N Toulouse","Cajun", 15, 11, 22, 11, 22, 38.03086996, -84.49104708]
-JimmyJohns = ["Jimmy Johns", "Sandwiches", 10, 10.5, 1, 10.5, 1, 38.03298376, -84.4937443]
-RollingOven = ["Rolling Oven", "Pizza", 4, 10, 2, 12, 12, 38.04213077, -84.50437168]
-Starbucks = ["Starbucks", "Coffee", 8, 6.5, 14.5, 12, 12, 38.03915567, -84.51431934]
-
-Restaurants = [McDonalds, RaisingCanes, WasabiBarandGrill, CookOut, BourbonNToulouse, JimmyJohns, RollingOven, Starbucks]
 
 WillyT = [38.03315024, -84.50173051]
 SC = [38.03987827, -84.50295523]
@@ -19,38 +9,45 @@ Anchors = [WillyT, SC]
 # use the google maps api nearby search to find 20 results
 # returns json string
 # radius in meters
-def nearbySearch(latitude, longtitude, radius, key, type = "restaurant"):
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longtitude}&radius={radius}&type={type}&key={key}"
-    payload = {}
-    headers = {}
+def nearbySearch(latitude, longitude, radius, key, pagetoken, type = "restaurant"):
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={type}&key={key}"
+    if pagetoken is not None:
+        url += f"&pagetoken={pagetoken}"
+        time.sleep(2)
+    payload, headers = {}, {}
 
     response = requests.request("GET", url, headers=headers, data=payload)
     results = json.loads(response.text)
-
-    # print(results)
     return results
 
 
-def checkBudget(initialList, maxBudget):
-    validPlaces = []
-    for place in initialList["results"]:
-        # print(place)
-        if place.get('price_level') is not None and place.get('price_level') <= maxBudget:
-            validPlaces.append(place["name"])
-    return validPlaces
+# calls nearbySearch as many times as possible using pagetoken and returns a dictionary of results
+def moreNearbySearch(latitude, longitude, radius, key, budget):
+    locations = {}
+    results = nearbySearch(latitude, longitude, radius, key, None)
+    for location in results.get("results"):
+        if checkBudget(location, budget):
+            locations[location.get("place_id")] = location
+
+    while "next_page_token" in results:
+        results = nearbySearch(latitude, longitude, radius, key, results.get("next_page_token"))
+        for location in results.get("results"):
+            if checkBudget(location, budget):
+                locations[location.get("place_id")] = location
+    return locations
 
 
-def checkDistance(initialList, maxDistance, index):
-    validPlaces = []
-    distance = 0.0
-    for place in initialList:
-        distance = abs(place[7]-Anchors[index][0]) + abs(place[8]-Anchors[index][1])
-        distance = distance*68.706
-        if distance < maxDistance:
-            validPlaces.append(place)
-    return validPlaces
+# check if given location is within the budget
+def checkBudget(location, budget):
+    if location.get("price_level") is None:
+        return False
+    elif location.get("price_level") <= budget:
+        return True
+    else:
+        return False
 
 
+# translates the priceLevel into Google Maps dollar sign notation
 def getPriceInDollarSigns(priceLevel):
     if priceLevel == 1:
         return "$"
@@ -64,19 +61,31 @@ def getPriceInDollarSigns(priceLevel):
         return "No info"
 
 
+# prints description of the specified location
 def printInfo(locations, index):
-    location = locations[index]
-    print(f"""
+    location = {}
+    for i in locations:
+        if locations[i].get("placeIndex") == index:
+            location = locations[i]
+    try: 
+        print(f"""
 ========== {location.get("name")} ==========
 {"Open Now" if location.get("opening_hours").get("open_now") == True else "CLOSED"}
 Address: {location.get("vicinity")}
 Rating: {location.get("rating")} Stars
 Price Level: {getPriceInDollarSigns(location.get("price_level"))}
-    """)
+        """)
+    except:
+        print(f"""
+=========================
+No info for this location
+=========================
+        """)
 
 
+# checks if API_KEY is valid
 def checkAPIKEY(API_KEY):
-    results = nearbySearch(0, 0, 1, API_KEY)
+    results = nearbySearch(0, 0, 1, API_KEY, None)
     if results["status"] == "OK" or results["status"] == "ZERO_RESULTS":
         return True
     else:
@@ -85,19 +94,22 @@ def checkAPIKEY(API_KEY):
 
 
 if __name__ == '__main__':
-    print("Welcome to the earliest version of the I Want Food Program! Thank you for trying me out!")
+    print("""
+==================================================
+Welcome to iWantFood! Thank you for trying me out!
+==================================================
+    """)
 
     API_KEY = input("Please enter your Google Maps API Key: ")
-    print(API_KEY)
     while True:
         if checkAPIKEY(API_KEY):
             break
         else:
-            API_KEY = input("Invalid API Key, please try again: ")
+            API_KEY = input("\nInvalid API Key, please try again: ")
 
     while True:
         try:
-            num = float(input("First, what is your budget today? Please enter a number from 1 (affordable) to 4 (expensive): "))
+            num = float(input("\nFirst, what is your budget today? Please enter a number from 1 (affordable) to 4 (expensive): "))
         except ValueError:
             print("You didn't enter a number!")
             continue
@@ -106,22 +118,21 @@ if __name__ == '__main__':
         else:
             print("You didn't enter a number from 1-4!")
     budget = num
-    print("The Budget is:", budget)
 
     flag = True
     while flag:
-        input_value = input("Do you plan on traveling from the Willy T '0' or the Student Center '1' ")
+        input_value = input("\nDo you plan on traveling from the Willy T '0' or the Student Center '1'? ")
         if (input_value == "0" or input_value == "1"):
             flag = False
         else:
-            print("Sorry, that didn't work. Can you please try again? ")
+            print("Sorry, that didn't work, please try again")
     AnchorIndex = int(input_value)
     currLocation = Anchors[AnchorIndex]
     currLat, currLong = currLocation[0], currLocation[1]
 
     while True:
         try:
-            num = float(input("Lastly, how far are you willing to travel (in miles) "))
+            num = float(input("\nLastly, how far are you willing to travel (in miles)? "))
         except ValueError:
             print("You didn't enter a number!")
             continue
@@ -133,31 +144,26 @@ if __name__ == '__main__':
     km = Miles * 1.609344
     meters = km * 1000
 
-    print(f"{currLat}, {currLong}, {km}")
-    
-    results = nearbySearch(currLat, currLong, meters, API_KEY)
-    locations = results["results"]
+    print("\nSearching...\n")
+    locations = moreNearbySearch(currLat, currLong, meters, API_KEY, budget)
 
     # List the names of the locations returned by nearby search and if they are open
-    print("The Valid Restaurants are: ")
+    print("=================== RESULTS ===================")
     placeIndex = 0
     for i in locations:
         try:
-            print(f"Location {placeIndex}: {i.get('name')} ({'Open now' if i.get('opening_hours').get('open_now') == True else 'CLOSED'})")
+            print(f"Location {placeIndex}: {locations[i].get('name')} ({'Open now' if locations[i].get('opening_hours').get('open_now') == True else 'CLOSED'})")
+            locations[i]["placeIndex"] = placeIndex
+            placeIndex += 1
         except:
-            pass
-        placeIndex += 1
+            # add flag to location so that printInfo doesn't blow up
+            locations[i]["canPrintInfo"] = False
 
-    """ # Print restaurant names that are within the inputted budget
-    valid = checkBudget(results, budget)
-    print(f"\nThere are {len(valid)} open restaurants within your budget")
-    for restaurant in valid:
-        print(restaurant) """
-
+    print()
     Flag2 = True
     while Flag2:
         try:
-            input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its index for more info, or '-1' to quit. "))
+            input_value = int(input("Would you like to learn more info about any of the restaurants? Type in its location number for more info, or '-1' to quit: "))
         except ValueError:
             print("You didn't enter an integer!")
             continue
@@ -168,4 +174,4 @@ if __name__ == '__main__':
         else:
             print("Invalid Index!")
 
-    print("Thank you for using I Want Food! v0.2.0")
+    print("Thank you for using I Want Food! v0.3.0")
