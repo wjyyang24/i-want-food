@@ -35,6 +35,7 @@ def nearbySearch(latitude, longitude, radius, key, pagetoken, type = "restaurant
     results = json.loads(response.text)
     return results
 
+# calls nearbySearch as many times as possible using pagetoken and returns a dictionary of results
 def moreNearbySearch(latitude, longitude, radius, key, budget):
     locations = {}
     results = nearbySearch(latitude, longitude, radius, key, None)
@@ -49,8 +50,7 @@ def moreNearbySearch(latitude, longitude, radius, key, budget):
                 locations[location.get("place_id")] = location
     return locations
 
-
-
+# check if given location is within the budget
 def checkBudget(location, budget):
     if location.get("price_level") is None:
         return False
@@ -72,7 +72,7 @@ def getPriceInDollarSigns(priceLevel):
     else:
         return "No info"
 
-
+# prints description of the specified location
 def printInfo(locations, index):
     location = {}
     for i in locations:
