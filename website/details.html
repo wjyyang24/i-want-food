@@ -35,7 +35,6 @@
     <script>
       async function getDetails(placeID) {
         var url = "https://iwantfood.helioho.st/cgi-bin/details.py?placeid=" + placeID;
-        console.log(url);
         var returnVal;
         var post = await fetch(url).then(response => response.text())
           .then((json) => {
@@ -45,7 +44,6 @@
       }
 
       function processDetails(data) {
-        console.log(data);
         var result = data.result
         document.getElementById("restTitle").innerHTML = result.name;
         document.getElementsByTagName("title")[0].innerHTML = result.name;
@@ -56,11 +54,9 @@
         document.getElementById("restWeb").href = result.website
       }
         const pageURL = new URL(window.location.toLocaleString());
-        console.log(pageURL)
         placeID = pageURL.searchParams.get("placeid")
-        console.log(placeID)
         details = getDetails(placeID)
-        console.log(details)
+        comments = getComments(placeID)
     </script>
   </body>
 </html>
