@@ -2,6 +2,8 @@
 from _csv import reader
 import csv
 
+FILENAME = "website/restaurants.csv"
+
 def load_csv(filename):
     data = list()
     with open(filename, 'r') as file:
@@ -23,8 +25,7 @@ def load_csv2(filename):
     return data
 
 def readReviews(restName):
-    filename = 'Restauraunts.csv'
-    data = load_csv(filename)
+    data = load_csv(FILENAME)
     #print(data)
     flag = False
     for row in data:
@@ -36,8 +37,7 @@ def readReviews(restName):
         print("No reviews!")
 
 def writeReview(restName, review):
-    filename = 'Restauraunts.csv'
-    data = load_csv2(filename)
+    data = load_csv2(FILENAME)
     flag = False
     for row in data:
         if (row[0] == restName):
@@ -46,7 +46,7 @@ def writeReview(restName, review):
     if flag == False:
         data.append([restName, review])
     #print(data)
-    with open(filename, 'w') as csvfile:
+    with open(FILENAME, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         for row in data:
             csvwriter.writerow(row)
