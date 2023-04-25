@@ -1,5 +1,4 @@
 #!/usr/bin/python3.10
-import json
 import requests
 import cgi
 import cgitb
