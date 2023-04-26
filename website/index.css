@@ -20,6 +20,7 @@ div {
     background-color: var(--content-bg);
     margin: 5vw 20vw;
     border-radius: 3vw;
+    padding: 5vw;
 }
 
 .slider {
@@ -32,6 +33,7 @@ h1 {
     font-family: 'Bruno Ace';
     color: whitesmoke;
     filter: drop-shadow(5px 5px 4px #591818);
+    font-size: 5vw;
 }
 
 h2 {
@@ -51,10 +53,11 @@ a {
     color: var(--green);
     transition: 0.2s;
     transition-timing-function: ease;
-    /* text-decoration: none; */
+    text-decoration: none;
 }
 
 a:hover {
     font-size: 24px;
     color: var(--purp);
+    text-decoration: underline;
 }
