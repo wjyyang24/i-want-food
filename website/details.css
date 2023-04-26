@@ -46,8 +46,7 @@ a:hover {
 .backgroundC {
     text-align: center;
     background-color: var(--content-bg);
-    margin: 5vw 20vw;
+    margin-top: 5vw;
     border-radius: 3vw;
-    justify-content: center;
     padding: 10px;
 }

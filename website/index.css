@@ -2,7 +2,7 @@
     --content-bg: rgba(99, 99, 99, 70%);
     --green: #20C020;
     --purp: #8430bd;
-    --red: #d24a4a;
+    --red: #bd5151
 }
 
 body {
@@ -30,8 +30,7 @@ div {
 
 h1 {
     font-family: 'Bruno Ace';
-    font-size: 5vw;
-    color: var(--red);
+    color: #bd5151;
 }
 
 h2 {
@@ -51,11 +50,10 @@ a {
     color: var(--green);
     transition: 0.2s;
     transition-timing-function: ease;
-    text-decoration: none;
+    /* text-decoration: none; */
 }
 
 a:hover {
     font-size: 24px;
-    color: var(--red);
-    text-decoration: underline;
+    color: var(--purp);
 }
