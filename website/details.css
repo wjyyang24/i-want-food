@@ -1,3 +1,13 @@
+:root {
+    --content-bg: rgba(99, 99, 99, 70%);
+    --green: #20C020;
+    --purp: #8430bd;
+}
+
+body {
+    background-image: url("food-background.jpg");
+}
+
 .slider {
     width: 425px;
     height: 70px;
@@ -32,5 +42,8 @@ a:hover {
 }
 
 .backgroundC {
-    background-color: #add8e6;
+    text-align: center;
+    background-color: var(--content-bg);
+    margin: 5vw 20vw;
+    border-radius: 3vw;
 }

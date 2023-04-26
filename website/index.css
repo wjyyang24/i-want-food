@@ -1,3 +1,14 @@
+:root {
+    --content-bg: rgba(99, 99, 99, 70%);
+    --green: #20C020;
+    --purp: #8430bd;
+}
+
+body {
+    background-image: url("food-background.jpg");
+    color: whitesmoke;
+}
+
 div {
     justify-content: center;
     padding: 10px;
@@ -5,7 +16,7 @@ div {
 
 .content {
     text-align: center;
-    background-color: rgba(99, 99, 99, 70%);
+    background-color: var(--content-bg);
     margin: 5vw 20vw;
     border-radius: 3vw;
 }
@@ -18,17 +29,12 @@ div {
 
 h1 {
     font-family: 'Bruno Ace';
-    color: #8430bd;
+    color: var(--purp);
 }
 
 h2 {
     font-family: 'Pacifico';
-    color:#20C020;
-}
-
-body {
-    background-image: url("food-background.jpg");
-    color: whitesmoke;
+    color: var(--green);
 }
 
 p {
@@ -40,12 +46,13 @@ li {
 }
 
 a {
-    color: #20C020;
+    color: var(--green);
     transition: 0.2s;
     transition-timing-function: ease;
+    /* text-decoration: none; */
 }
 
 a:hover {
     font-size: 24px;
-    color: #8430bd;
+    color: var(--purp);
 }
