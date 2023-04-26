@@ -30,6 +30,7 @@ div {
 
 h1 {
     font-family: 'Bruno Ace';
+    font-size: large;
     color: var(--red);
 }
 
@@ -50,10 +51,11 @@ a {
     color: var(--green);
     transition: 0.2s;
     transition-timing-function: ease;
-    /* text-decoration: none; */
+    text-decoration: none;
 }
 
 a:hover {
     font-size: 24px;
     color: var(--red);
+    text-decoration: underline;
 }
