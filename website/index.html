@@ -8,62 +8,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bruno+Ace">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo+2">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-    <style>
-        div {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-        }
-        .slider {
-            width: 425px;
-            height: 70px;
-            color: DodgerBlue;
-        }
-        h1 {
-        	font-family: 'Bruno Ace';
-            color: #8430bd;
-        }
-        h2 {
-        	font-family: 'Pacifico';
-        }
-        body {
-        	background-color: lightblue;
-        }
-        p {
-        	font-family: 'Exo 2';
-        }
-        li {
-        	font-family: 'Exo 2';
-        }
-        a {
-        	transition: 0.2s;
-            transition-timing-function: ease;
-        }
-        a:hover {
-        	font-size: 24px;
-            color: #8430bd;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
   </head>
+
   <body>
-    <div><h1>iWantFood</h1></div>
-    <div><p>Fill out the criteria of food below, and we'll give you restaurants that meet your criteria!</p></div>
-    <div><h2 style="color:#20A020; font-family:Pacifico;">Budget</h2></div>
-    <div class="slidecontainer">
-      <span>Less expensive</span><input type="range" min="1" max="4" value="2" class="slider" id="budgetRange"><span>More expensive</span>
-      <div id="dollarSigns"></div>
+    <div class="content">
+      <div><h1>iWantFood</h1></div>
+      <div><p>Fill out the criteria of food below, and we'll give you restaurants that meet your criteria!</p></div>
+      <div><h2>Budget</h2></div>
+      <div class="slidecontainer">
+        <span>Less expensive</span><input type="range" min="1" max="4" value="2" class="slider" id="budgetRange"><span>More expensive</span>
+        <div id="dollarSigns"></div>
+      </div>
+      <div><h2>Starting Location</h2></div>
+      <div class="anchorButtons">
+        <button type="button" id="btn0" class="btn btn-primary btn-lg" aria-pressed="false" onclick="btnUpdate(0)">William T. Young Library</button>&nbsp;
+        <button type="button" id="btn1" class="btn btn-secondary btn-lg" aria-pressed="false" onclick="btnUpdate(1)">Student Center</button>
+      </div>
+      <div><h2>Max. Distance (miles)</h2></div>
+      <div class="distanceInput">
+        <input type="number" name="distanceBox" min="0" max="100" value="0" id="distanceBox"/>
+      </div>
+      <div><button type="button" class="btn btn-secondary btn-lg" id="submit" onclick="requestPlaces()">Go</button></div>
+      <div><p id="restaurantList"></p></div>
     </div>
-    <div><h2>Starting Location</h2></div>
-    <div class="anchorButtons">
-      <button type="button" id="btn0" class="btn btn-primary btn-lg" aria-pressed="false" onclick="btnUpdate(0)">William T. Young Library</button>&nbsp;
-      <button type="button" id="btn1" class="btn btn-secondary btn-lg" aria-pressed="false" onclick="btnUpdate(1)">Student Center</button>
-    </div>
-    <div><h2>Max. Distance (miles)</h2></div>
-    <div class="distanceInput">
-      <input type="number" name="distanceBox" min="0" max="100" value="0" id="distanceBox"/>
-    </div>
-    <div><button type="button" class="btn btn-secondary btn-lg" id="submit" onclick="requestPlaces()">Go</button></div>
-    <div><p id="restaurantList"></p></div>
 
     <script>
       const numButtons = 2

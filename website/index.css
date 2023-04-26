@@ -1,0 +1,51 @@
+div {
+    justify-content: center;
+    padding: 10px;
+}
+
+.content {
+    text-align: center;
+    background-color: rgba(99, 99, 99, 70%);
+    margin: 5vw 20vw;
+    /* border: 2px solid rgba(99, 99, 99, 70%); */
+    border-radius: 3vw;
+}
+
+.slider {
+    width: 425px;
+    height: 70px;
+    color: DodgerBlue;
+}
+
+h1 {
+    font-family: 'Bruno Ace';
+    color: #8430bd;
+}
+
+h2 {
+    font-family: 'Pacifico';
+    color:#20C020;
+}
+
+body {
+    background-image: url("food-background.jpg");
+    color: whitesmoke;
+}
+
+p {
+    font-family: 'Exo 2';
+}
+
+li {
+    font-family: 'Exo 2';
+}
+
+a {
+    transition: 0.2s;
+    transition-timing-function: ease;
+}
+
+a:hover {
+    font-size: 24px;
+    color: #8430bd;
+}
