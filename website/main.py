@@ -5,6 +5,7 @@ import json
 import requests
 import cgi
 import cgitb
+import time
 cgitb.enable()
 print("Content-Type: text/html\n\n") #header for browser reading data
 apiFile = open("apiKey.txt","r")
@@ -23,44 +24,44 @@ Miles = float(args["miles"][0])
 # use the google maps api nearby search to find 20 results
 # returns json string
 # radius in meters
-def nearbySearch(latitude, longtitude, radius, maxprice, key, type = "restaurant"):
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longtitude}&radius={radius}&type={type}&key={key}&maxprice={maxprice}"
-    payload = {}
-    headers = {}
+def nearbySearch(latitude, longitude, radius, key, pagetoken, type = "restaurant"):
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={type}&key={key}"
+    if pagetoken is not None:
+        url += f"&pagetoken={pagetoken}"
+        time.sleep(2)
+    payload, headers = {}, {}
 
     response = requests.request("GET", url, headers=headers, data=payload)
     results = json.loads(response.text)
-
-    # print(results)
     return results
 
+# calls nearbySearch as many times as possible using pagetoken and returns a dictionary of results
+def moreNearbySearch(latitude, longitude, radius, key, budget):
+    locations = {}
+    results = nearbySearch(latitude, longitude, radius, key, None)
+    for location in results.get("results"):
+        if checkBudget(location, budget):
+            locations[location.get("place_id")] = location
 
-def checkBudget(initialList, maxBudget):
+    while "next_page_token" in results:
+        results = nearbySearch(latitude, longitude, radius, key, results.get("next_page_token"))
+        for location in results.get("results"):
+            if checkBudget(location, budget):
+                locations[location.get("place_id")] = location
+    return locations
 
-    validPlaces = []
-    for place in initialList["results"]:
-        # print(place)
-        if place.get('price_level') is not None and place.get('price_level') <= maxBudget:
-            validPlaces.append(place["name"])
-    return validPlaces
+# check if given location is within the budget
+def checkBudget(location, budget):
+    if location.get("price_level") is None:
+        return False
+    elif location.get("price_level") <= budget:
+        return True
+    else:
+        return False
 
-
-def checkDistance(initialList, maxDistance, index):
-    validPlaces = []
-    distance = 0.0
-    for place in initialList:
-        distance = abs(place[7]-Anchors[index][0]) + abs(place[8]-Anchors[index][1])
-        distance = distance*68.706
-        if distance < maxDistance:
-            validPlaces.append(place)
-    return validPlaces
-
-
+# translates the priceLevel into Google Maps dollar sign notation
 def getPriceInDollarSigns(priceLevel):
-    if priceLevel == 0:
-        return "Free!(?)"
-    elif priceLevel == 1:
-
+    if priceLevel == 1:
         return "$"
     elif priceLevel == 2:
         return "$$"
@@ -71,9 +72,12 @@ def getPriceInDollarSigns(priceLevel):
     else:
         return "No info"
 
-
+# prints description of the specified location
 def printInfo(locations, index):
-    location = locations[index]
+    location = {}
+    for i in locations:
+        if locations[i].get("placeIndex") == index:
+            location = locations[i]
     try:
         print(f"""
         <a href="/cgi-bin/details.html?placeid={location.get("place_id")}">========== {location.get("name")} ==========</a><br>
@@ -94,7 +98,7 @@ if __name__ == '__main__':
 
     #print(f"{currLat}, {currLong}, {km}")
     
-    results = nearbySearch(currLat, currLong, meters, budget, API_KEY)
+    results = moreNearbySearch(currLat, currLong, meters, API_KEY, budget)
     locations = results["results"]
 
     # List the names of the locations returned by nearby search and if they are open

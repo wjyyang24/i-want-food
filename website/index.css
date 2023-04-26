@@ -1,0 +1,63 @@
+:root {
+    --content-bg: rgba(99, 99, 99, 70%);
+    --green: #20C020;
+    --purp: #8430bd;
+    --red: #bd5151
+}
+
+body {
+    background-image: url("food-background.jpg");
+    color: whitesmoke;
+}
+
+div {
+    justify-content: center;
+    padding: 10px;
+}
+
+.content {
+    text-align: center;
+    background-color: var(--content-bg);
+    margin-top: 5vw;
+    border-radius: 3vw;
+    padding: 5vw;
+}
+
+.slider {
+    width: 50%;
+    height: 70px;
+    color: DodgerBlue;
+}
+
+h1 {
+    font-family: 'Bruno Ace';
+    color: whitesmoke;
+    filter: drop-shadow(5px 5px 4px #591818);
+    font-size: 5vw;
+}
+
+h2 {
+    font-family: 'Pacifico';
+    color: var(--green);
+}
+
+p {
+    font-family: 'Exo 2';
+}
+
+li {
+    font-family: 'Exo 2';
+}
+
+a {
+    color: var(--green);
+    transition: 0.2s;
+    transition-timing-function: ease;
+    text-decoration: none;
+}
+
+a:hover {
+    font-size: 24px;
+    color: var(--purp);
+    text-decoration: underline;
+}

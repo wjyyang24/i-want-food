@@ -1,28 +1,125 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Loading...</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bruno+Ace">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo+2">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <style>
-        div {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="details.css">
   </head>
   <body>
-    <div>
-        <h1 id="restTitle"></h1>
-        <div id="restDetails"></div>
+    <div class="container backgroundC">
+      <div class="justify-content-center my-3"><div class=col><h1 id="restTitle" style="text-align:center; color:#8430bd">Please wait...</h1></div></div>
+      <div class="row justify-content-center">
+        <div class="col-sm-3">
+          <h2>Hours</h2>
+          <ul id="restHrList">
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <div class="row">
+            <h2>Location</h2>
+            <p id="restLoc"></p>
+          </div>
+          <div class="row">
+            <a id="restWeb"><h2>Website</h2></a>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="row">
+            <textarea id="reviewBox" style="display: none;" placeholder="Enter review here..." rows="6" cols="40"></textarea>
+            <span id="submitText" style="text-align: center"></span>
+          </div>
+          <div class="row justify-content-end">
+            <div class="col justify-content-end">
+              <button type="button" id="submitBtn" class="btn btn-primary btn-2 offset-10" style="justify-self:end; display:none" onclick="submitReview()">Submit</button>
+            </div>
+          </div>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col-md-4 offset-md-2">
+          <h2>Reviews</h2>
+        </div>
+        <div class="col-md offset-md-2">
+          <button type="button" id="reviewBtn" class="btn btn-primary btn-lg" style="justify-self: flex-end;" onclick="showReviewBox()">Write a review</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2 my-3" id="restReviews"></div>
+      </div>
     </div>
 
+
     <script>
+      async function getDetails(placeID) {
+        var url = "https://iwantfood.helioho.st/cgi-bin/details.py?placeid=" + placeID;
+        var post = await fetch(url).then(response => response.text())
+          .then((json) => {
+            json = JSON.parse(json)
+            processDetails(json);
+          });
+      }
+
+      async function getReviews(placeID) {
+        const url = "https://iwantfood.helioho.st/cgi-bin/readComments.py?placeid=" + placeID;
+        const reviewSpan = document.getElementById("restReviews")
+        var promise = await fetch(url).then(response => response.text())
+        .then((json) => {
+          json = JSON.parse(json);
+          json.entries.forEach(element => {
+            reviewSpan.innerHTML = reviewSpan.innerHTML.concat("<p class='review cR'></p>");
+            cR = document.getElementsByClassName('cR')[0];
+            element = sanitizeHTML(element)
+            cR.innerText='"'+element+'"'
+            cR.classList.remove("cR");
+          });
+        });
+      }
+
+      async function submitReview() {
+        var review = document.getElementById("reviewBox").value;
+        review = sanitizeHTML(review)
+        var url = "https://iwantfood.helioho.st/cgi-bin/writeComments.py?placeid=" + placeID + "&review=" + review;
+        var url = new URL(url);
+        var promise = await fetch(url).then(response => response.text())
+        .then(response => {
+          document.getElementById("submitText").innerHTML = response;
+          document.getElementById("submitBtn").style.display = "none"
+          document.getElementById("reviewBox").style.display = "none"
+        });
+      }
+
+      function processDetails(data) {
+        var result = data.result
+        document.getElementById("restTitle").innerHTML = result.name;
+        document.getElementsByTagName("title")[0].innerHTML = result.name;
+        result.opening_hours.weekday_text.forEach(element => {
+          document.getElementById("restHrList").innerHTML = document.getElementById("restHrList").innerHTML.concat('<li>'+element+'</li>')
+        });
+        document.getElementById("restLoc").innerHTML = result.adr_address
+        document.getElementById("restWeb").href = result.website
+      }
+
+      function showReviewBox() {
+        document.getElementById("reviewBox").style.display = "initial";
+        document.getElementById("reviewBtn").style.display = "none";
+        document.getElementById("submitBtn").style.display = "initial";
+      }
+
+      function sanitizeHTML(text) {
+        var element = document.createElement('div');
+        element.innerText = text;
+        return element.innerHTML;
+      }
         const pageURL = new URL(window.location.toLocaleString());
-        console.log(pageURL)
-        placeID = pageURL.searchParams.get("placeid")
-        console.log(placeID)
+        const placeID = pageURL.searchParams.get("placeid")
+        details = getDetails(placeID)
+        reviews = getReviews(placeID)
     </script>
   </body>
 </html>
