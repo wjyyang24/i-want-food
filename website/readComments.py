@@ -1,15 +1,62 @@
 #!/usr/bin/python3.10
+from csv import reader
+import csv
 import cgi
 import cgitb
-import comments
-
 cgitb.enable()
 print("Content-Type: text/html\n\n")
 
-args=cgi.parse()
-if len(args) == 0:
-    placeID = input("Enter place ID: ")
-else:
-    placeID = args["placeid"][0]
+FILENAME = "comments.csv"
 
-comments.readReviews(placeID)
+def load_csv(filename):
+    data = list()
+    with open(filename, 'r') as file:
+        csv_reader = reader(file, delimiter=",")
+        for row in csv_reader:
+            if not row:
+                continue
+            data.append(row)
+    return data
+
+def load_csv2(filename):
+    data = list()
+    with open(filename, 'r+') as file:
+        csv_reader = reader(file, delimiter=",")
+        for row in csv_reader:
+            if not row:
+                continue
+            data.append(row)
+    return data
+
+def readReviews(restName):
+    data = load_csv(FILENAME)
+    #print(data)
+    flag = False
+    for row in data:
+        if (row[0] == restName):
+            for i in range(len(row)-1):
+                print(row[i+1])
+            flag = True
+    if flag == False:
+        print("No reviews!")
+
+def writeReview(restName, review):
+    data = load_csv2(FILENAME)
+    flag = False
+    for row in data:
+        if (row[0] == restName):
+            row.append(review)
+            flag = True
+    if flag == False:
+        data.append([restName, review])
+    #print(data)
+    with open(FILENAME, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        for row in data:
+            csvwriter.writerow(row)
+
+print("test")
+args=cgi.parse()
+placeID = args["placeid"][0]
+
+reviews = readReviews(placeID)

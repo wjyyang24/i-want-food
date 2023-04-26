@@ -1,9 +1,10 @@
 #!/usr/bin/python3.10
 from _csv import reader
 import csv
+import cgi
+import cgitb
 
 FILENAME = "website/restaurants.csv"
-
 def load_csv(filename):
     data = list()
     with open(filename, 'r') as file:
@@ -50,3 +51,10 @@ def writeReview(restName, review):
         csvwriter = csv.writer(csvfile)
         for row in data:
             csvwriter.writerow(row)
+
+cgitb.enable()
+print("Content-Type: text/html\n\n")
+args=cgi.parse()
+placeID = "ChIJ2bonnqtcQogR5WWT3D4UWqQ"#args["placeid"][0]
+
+reviews = readReviews(placeID)
