@@ -32,7 +32,7 @@ def readReviews(restName):
     for row in data:
         if (row[0] == restName):
             for i in range(len(row)-1):
-                print(row[i+1])
+                print("<p style='review'>"+row[i+1]+"</p>")
             flag = True
     if flag == False:
         print("No reviews!")
