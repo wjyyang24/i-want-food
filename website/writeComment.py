@@ -13,4 +13,4 @@ args=cgi.parse()
 placeID = args["placeid"][0]
 review = args["review"][0]
 
-readComments.writeReview()
+readComments.writeReview(placeID,review)
