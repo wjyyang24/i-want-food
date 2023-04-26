@@ -1,10 +1,9 @@
 #!/usr/bin/python3.10
-from _csv import reader
+from csv import reader
 import csv
-import cgi
-import cgitb
 
-FILENAME = "website/restaurants.csv"
+FILENAME = "comments.csv"
+
 def load_csv(filename):
     data = list()
     with open(filename, 'r') as file:
@@ -27,15 +26,14 @@ def load_csv2(filename):
 
 def readReviews(restName):
     data = load_csv(FILENAME)
-    #print(data)
     flag = False
     for row in data:
         if (row[0] == restName):
             for i in range(len(row)-1):
-                print(row[i+1])
+                print("<p style='review'>\""+row[i+1]+"\"</p>")
             flag = True
     if flag == False:
-        print("No reviews!")
+        print("No reviews (yet!)")
 
 def writeReview(restName, review):
     data = load_csv2(FILENAME)
@@ -46,7 +44,6 @@ def writeReview(restName, review):
             flag = True
     if flag == False:
         data.append([restName, review])
-    #print(data)
     with open(FILENAME, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         for row in data:

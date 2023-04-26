@@ -62,11 +62,31 @@
           </div>
         </div>
       </div>
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="row">
+            <textarea id="reviewBox" style="display: none;" placeholder="Enter review here..." rows="6" cols="40"></textarea>
+            <span id="submitText" style="text-align: center"></span>
+          </div>
+          <div class="row justify-content-end">
+            <div class="col justify-content-end">
+              <button type="button" id="submitBtn" class="btn btn-primary btn-2 offset-10" style="justify-self:end; display:none" onclick="submitReview()">Submit</button>
+            </div>
+          </div>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col-md-4 offset-md-2">
+          <h2>Reviews</h2>
+        </div>
+        <div class="col-md offset-md-2">
+          <button type="button" id="reviewBtn" class="btn btn-primary btn-lg" style="justify-self: flex-end;" onclick="showReviewBox()">Write a review</button>
+        </div>
+      </div>
       <div class="row">
-        <h2>Reviews</h2>
-        <span id="restReviews"></span>
+        <div class="col-md-8 offset-md-2 my-3" id="restReviews"></div>
       </div>
     </div>
+
 
     <script>
       async function getDetails(placeID) {
@@ -86,6 +106,18 @@
         });
       }
 
+      async function submitReview() {
+        var review = document.getElementById("reviewBox").value;
+        var url = "https://iwantfood.helioho.st/cgi-bin/writeComments.py?placeid=" + placeID + "&review=" + review;
+        var url = new URL(url);
+        var promise = await fetch(url).then(response => response.text())
+        .then(response => {
+          document.getElementById("submitText").innerHTML = response;
+          document.getElementById("submitBtn").style.display = "none"
+          document.getElementById("reviewBox").style.display = "none"
+        });
+      }
+
       function processDetails(data) {
         var result = data.result
         document.getElementById("restTitle").innerHTML = result.name;
@@ -97,8 +129,15 @@
         document.getElementById("restWeb").href = result.website
       }
 
+      function showReviewBox() {
+        document.getElementById("reviewBox").style.display = "initial";
+        document.getElementById("reviewBtn").style.display = "none";
+        document.getElementById("submitBtn").style.display = "initial";
+      }
+
+
         const pageURL = new URL(window.location.toLocaleString());
-        placeID = pageURL.searchParams.get("placeid")
+        const placeID = pageURL.searchParams.get("placeid")
         details = getDetails(placeID)
         reviews = getReviews(placeID)
     </script>
