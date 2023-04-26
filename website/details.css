@@ -1,15 +1,3 @@
-div {
-    justify-content: center;
-    padding: 10px;
-}
-
-.content {
-    text-align: center;
-    background-color: rgba(99, 99, 99, 70%);
-    margin: 5vw 20vw;
-    border-radius: 3vw;
-}
-
 .slider {
     width: 425px;
     height: 70px;
@@ -23,12 +11,6 @@ h1 {
 
 h2 {
     font-family: 'Pacifico';
-    color:#20C020;
-}
-
-body {
-    background-image: url("food-background.jpg");
-    color: whitesmoke;
 }
 
 p {
@@ -40,7 +22,6 @@ li {
 }
 
 a {
-    color: #20C020;
     transition: 0.2s;
     transition-timing-function: ease;
 }
@@ -48,4 +29,8 @@ a {
 a:hover {
     font-size: 24px;
     color: #8430bd;
+}
+
+.backgroundC {
+    background-color: #add8e6;
 }
