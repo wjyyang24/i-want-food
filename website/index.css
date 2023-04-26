@@ -18,7 +18,7 @@ div {
 .content {
     text-align: center;
     background-color: var(--content-bg);
-    margin: 5vw 20vw;
+    margin-top: 3vw;
     border-radius: 3vw;
 }
 
