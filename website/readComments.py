@@ -3,8 +3,6 @@ from csv import reader
 import csv
 import cgi
 import cgitb
-cgitb.enable()
-print("Content-Type: text/html\n\n")
 
 FILENAME = "comments.csv"
 
@@ -30,7 +28,6 @@ def load_csv2(filename):
 
 def readReviews(restName):
     data = load_csv(FILENAME)
-    #print(data)
     flag = False
     for row in data:
         if (row[0] == restName):
@@ -49,13 +46,14 @@ def writeReview(restName, review):
             flag = True
     if flag == False:
         data.append([restName, review])
-    #print(data)
     with open(FILENAME, 'w') as csvfile:
         csvwriter = csv.writer(csvfile)
         for row in data:
             csvwriter.writerow(row)
 
-print("test")
+cgitb.enable()
+print("Content-Type: text/html\n\n")
+FILENAME = "comments.csv"
 args=cgi.parse()
 placeID = args["placeid"][0]
 

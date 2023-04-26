@@ -51,10 +51,3 @@ def writeReview(restName, review):
         csvwriter = csv.writer(csvfile)
         for row in data:
             csvwriter.writerow(row)
-
-cgitb.enable()
-print("Content-Type: text/html\n\n")
-args=cgi.parse()
-placeID = "ChIJ2bonnqtcQogR5WWT3D4UWqQ"#args["placeid"][0]
-
-reviews = readReviews(placeID)
