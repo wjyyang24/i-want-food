@@ -2,10 +2,12 @@
 import cgi
 import cgitb
 import comments
+import json
 
 cgitb.enable()
-print("Content-Type: text/html\n\n")
+print("Content-Type: application/json\n\n")
 args=cgi.parse()
 placeID = args["placeid"][0]
 
 reviews = comments.readReviews(placeID)
+print(reviews)

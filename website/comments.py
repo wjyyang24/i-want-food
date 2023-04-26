@@ -1,6 +1,7 @@
 #!/usr/bin/python3.10
 from csv import reader
 import csv
+import json
 
 FILENAME = "comments.csv"
 
@@ -29,11 +30,8 @@ def readReviews(restName):
     flag = False
     for row in data:
         if (row[0] == restName):
-            for i in range(len(row)-1):
-                print("<p style='review'>\""+row[i+1]+"\"</p>")
-            flag = True
-    if flag == False:
-        print("No reviews (yet!)")
+            return json.dumps({"entries": row[1:]})
+    return json.dumps({"entries": ["No reviews (yet!)"]})
 
 def writeReview(restName, review):
     data = load_csv2(FILENAME)

@@ -99,15 +99,24 @@
       }
 
       async function getReviews(placeID) {
-        var url = "https://iwantfood.helioho.st/cgi-bin/readComments.py?placeid=" + placeID;
+        const url = "https://iwantfood.helioho.st/cgi-bin/readComments.py?placeid=" + placeID;
+        const reviewSpan = document.getElementById("restReviews")
         var promise = await fetch(url).then(response => response.text())
-        .then((reviews) => {
-          document.getElementById("restReviews").innerHTML = reviews;
+        .then((json) => {
+          json = JSON.parse(json);
+          json.entries.forEach(element => {
+            reviewSpan.innerHTML = reviewSpan.innerHTML.concat("<p class='review cR'></p>");
+            cR = document.getElementsByClassName('cR')[0];
+            element = sanitizeHTML(element)
+            cR.innerText='"'+element+'"'
+            cR.classList.remove("cR");
+          });
         });
       }
 
       async function submitReview() {
         var review = document.getElementById("reviewBox").value;
+        review = sanitizeHTML(review)
         var url = "https://iwantfood.helioho.st/cgi-bin/writeComments.py?placeid=" + placeID + "&review=" + review;
         var url = new URL(url);
         var promise = await fetch(url).then(response => response.text())
@@ -135,7 +144,11 @@
         document.getElementById("submitBtn").style.display = "initial";
       }
 
-
+      function sanitizeHTML(text) {
+        var element = document.createElement('div');
+        element.innerText = text;
+        return element.innerHTML;
+      }
         const pageURL = new URL(window.location.toLocaleString());
         const placeID = pageURL.searchParams.get("placeid")
         details = getDetails(placeID)
