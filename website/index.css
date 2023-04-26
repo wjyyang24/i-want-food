@@ -2,6 +2,7 @@
     --content-bg: rgba(99, 99, 99, 70%);
     --green: #20C020;
     --purp: #8430bd;
+    --red: #bd5151;
 }
 
 body {
@@ -22,14 +23,14 @@ div {
 }
 
 .slider {
-    width: 425px;
+    width: 40%;
     height: 70px;
     color: DodgerBlue;
 }
 
 h1 {
     font-family: 'Bruno Ace';
-    color: var(--purp);
+    color: var(--red);
 }
 
 h2 {
@@ -54,5 +55,5 @@ a {
 
 a:hover {
     font-size: 24px;
-    color: var(--purp);
+    color: var(--red);
 }
