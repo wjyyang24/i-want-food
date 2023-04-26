@@ -30,7 +30,8 @@ div {
 
 h1 {
     font-family: 'Bruno Ace';
-    color: #bd5151;
+    color: whitesmoke;
+    filter: drop-shadow(5px 5px 4px #591818);
 }
 
 h2 {
